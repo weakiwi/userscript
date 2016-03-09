@@ -2,8 +2,8 @@
 // @name         豆瓣读书海事大学图书馆插件
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description  一个用来在豆瓣读书页面显示大连海事大学图书馆相关藏书地以及借书号的脚本
-// @author       weakiwi
+// @description  try to take over the world!
+// @author       You
 // @match        https://book.douban.com/subject/*
 // @grant        none
 // @grant        GM_xmlhttpRequest
@@ -36,12 +36,13 @@ function run () {
 		$("<span>").attr("class", "pl").html("下载链接:")
 	);
     isbn = getISBN();
-    function newztflh(book_name, book_location, book_ztflh) {
+    function newztflh(book_name, book_location, book_ztflh, book_states) {
         this.book_name = book_name;
         this.book_location = book_location;
+        this.book_states = book_states;
         this.book_ztflh = book_ztflh;
     }
-    var ztflh = new newztflh('','','');
+    var ztflh = new newztflh('','','','');
     GM_xmlhttpRequest({
         method: "GET",
         url: "http://115.28.1.228/xx1.php?search="+keyword1,
@@ -54,6 +55,12 @@ function run () {
             else{
                 ztflh.book_name = obj.book_name;
                 ztflh.book_location = obj.book_location;
+                if (obj.book_states == null) {
+                    ztflh.booke_states = '';
+                }
+                else {
+                    ztflh.book_states = obj.book_states;
+                }
                 ztflh.book_ztflh = obj.book_ztflh;
             }                
             switch(location.host){
@@ -73,7 +80,7 @@ function run () {
                 case "book.douban.com":
                     appendLinks(Book_links, link)                    
                     link.append('<br>')
-                        .append('<span class="pl">图书馆信息 :</span>'+ztflh.book_name+' '+ztflh.book_location+' '+ztflh.book_ztflh+' '+'<br/>')
+                        .append('<span class="pl">图书馆信息 :</span>'+'<br />'+ztflh.book_name+' '+'<br />'+ztflh.book_location+' '+'<br />'+ztflh.book_ztflh+' '+'<br />'+'<b>'+ztflh.book_states+'</b>'+'<br />')
                     break;
             }
 
