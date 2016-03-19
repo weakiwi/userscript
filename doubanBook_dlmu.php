@@ -1,5 +1,6 @@
 <?php
     error_reporting(E_ALL | E_STRICT);//错误报告为严格
+    libxml_use_internal_errors(true);
     header("Content-Type: text/html;charset=utf-8");//防止出现乱码
     $search = "";
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
